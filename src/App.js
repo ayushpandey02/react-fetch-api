@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import React, { useState } from 'react' ;
 import './App.css';
 
-function App() {
+const App=() => {
+
+  const [users,setUsers] = useState([])
+
+  const loadUsers = async()=>{
+    console.log('before')
+    const response= await fetch ('https://api.github.com/users');
+    const jsonResponse  = await response.json()
+    setUsers(jsonResponse)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <h1>React app to fetch api.</h1>
+      <button  onClick={loadUsers} >Get Data</button>
+
+      <h2>Users:</h2>
+
+      <ul>
+        {users.map(({id,login, avatar_url}) =>(
+          <li key={id}>
+            {id}. 
+            Name: {login}, 
+            Avatar : {avatar_url}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
